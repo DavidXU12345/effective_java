@@ -1,5 +1,3 @@
-# Effective Java Reading Notes
-
 ## Chapter 2: Creating and Destroying Objects
 
 ### Item 1: Consider static factory methods instead of constructors
@@ -210,7 +208,7 @@ public class Elvis {
     }
 }
 ```
-Static factory gives you the flexibility to change your mind about whether the class is a singleton without changing its API. For exaple, it could be modified to return a separate instance for each thread that invokes it.<br><br>
+Static factory gives you the flexibility to change your mind about whether the class is a singleton without changing its API. For exaple, it could be modified to return a separate instance for each thread that invokes it.
 
 ### Item 4: Enforce noninstantiability with a private constructor
 ```java
@@ -326,4 +324,87 @@ public class Sum {
 ```
 
 ### Item 7: Eliminate obsolete object references
+```java
+package effectivejava.chapter2.item7;
+import java.util.*;
 
+// Can you spot the "memory leak"?  (Pages 26-27)
+public class Stack {
+    private Object[] elements;
+    private int size = 0;
+    private static final int DEFAULT_INITIAL_CAPACITY = 16;
+
+    public Stack() {
+        elements = new Object[DEFAULT_INITIAL_CAPACITY];
+    }
+
+    public void push(Object e) {
+        ensureCapacity();
+        elements[size++] = e;
+    }
+
+    public Object pop() {
+        if (size == 0)
+            throw new EmptyStackException();
+        return elements[--size];
+    }
+
+    /**
+     * Ensure space for at least one more element, roughly
+     * doubling the capacity each time the array needs to grow.
+     */
+    private void ensureCapacity() {
+        if (elements.length == size)
+            elements = Arrays.copyOf(elements, 2 * size + 1);
+    }
+
+//    // Corrected version of pop method (Page 27)
+//    public Object pop() {
+//        if (size == 0)
+//            throw new EmptyStackException();
+//        Object result = elements[--size];
+//        elements[size] = null; // Eliminate obsolete reference
+//        return result;
+//    }
+
+    public static void main(String[] args) {
+        Stack stack = new Stack();
+        for (String arg : args)
+            stack.push(arg);
+
+        while (true)
+            System.err.println(stack.pop());
+    }
+}
+```
+If you are lucky enough to implement a cache for which the lifetime of the cache is bounded by the lifetime of the program, you can use a ```WeakHashMap``` instead of a ```HashMap```. A ```WeakHashMap``` will automatically discard entries when it detects that their keys are no longer in ordinary use.
+
+### item 8: Avoid finalizers and cleaners
+Don't use cleaners and finalizers except as a safety net.
+
+### Item 9: Prefer try-with-resources to try-finally
+```java
+package effectivejava.chapter2.item9.trywithresources;
+
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TopLineWithDefault {
+    // try-with-resources with a catch clause  (Page 36)
+    static String firstLineOfFile(String path, String defaultVal) {
+        try (BufferedReader br = new BufferedReader(
+                new FileReader(path))) {
+            return br.readLine();
+        } catch (IOException e) {
+            return defaultVal;
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        String path = args[0];
+        System.out.println(firstLineOfFile(path, "Toppy McTopFace"));
+    }
+}
+```
