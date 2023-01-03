@@ -1,6 +1,6 @@
-## Chapter 2: Creating and Destroying Objects
+# Chapter 2: Creating and Destroying Objects
 
-### Item 1: Consider static factory methods instead of constructors
+## Item 1: Consider static factory methods instead of constructors
 
 ```java
 public static Boolean valueOf(boolean b) {
@@ -9,7 +9,7 @@ public static Boolean valueOf(boolean b) {
 ```
 They are not required to create a new object each time they'er invoked, unlike constructor.
 
-### Item 2: Consider a builder when faced with many constructor parameters
+## Item 2: Consider a builder when faced with many constructor parameters
 
 Java beans pattern
 
@@ -165,7 +165,7 @@ public class PizzaTest {
 ```
 Builder pattern is a good choice when designing classes whose constructors or static factories would have more than a handful of parameters.<br><br>
 
-### Item 3: Enforce the singleton property with a private constructor or an enum type
+## Item 3: Enforce the singleton property with a private constructor or an enum type
 <br>Public final field
 ```java
 package effectivejava.chapter2.item3.field;
@@ -210,7 +210,7 @@ public class Elvis {
 ```
 Static factory gives you the flexibility to change your mind about whether the class is a singleton without changing its API. For exaple, it could be modified to return a separate instance for each thread that invokes it.
 
-### Item 4: Enforce noninstantiability with a private constructor
+## Item 4: Enforce noninstantiability with a private constructor
 ```java
 package effectivejava.chapter2.item4;
 
@@ -225,7 +225,7 @@ public class UtilityClass {
 }
 ```
 
-### Item 5: Prefer dependency injection to hardwiring resources
+## Item 5: Prefer dependency injection to hardwiring resources
 Pass the resource to the constructor when creating a new instance.
 ```java
 // Dependency injection provides flexibility and testability
@@ -249,7 +249,7 @@ Mosaic create(Supplier<? extends Tile> tileFactory) {
 }
 ```
 
-### Item 6: Avoid creating unnecessary objects
+## Item 6: Avoid creating unnecessary objects
 ```java
 package effectivejava.chapter2.item6;
 import java.util.regex.Pattern;
@@ -323,7 +323,7 @@ public class Sum {
 }
 ```
 
-### Item 7: Eliminate obsolete object references
+## Item 7: Eliminate obsolete object references
 ```java
 package effectivejava.chapter2.item7;
 import java.util.*;
@@ -379,10 +379,12 @@ public class Stack {
 ```
 If you are lucky enough to implement a cache for which the lifetime of the cache is bounded by the lifetime of the program, you can use a ```WeakHashMap``` instead of a ```HashMap```. A ```WeakHashMap``` will automatically discard entries when it detects that their keys are no longer in ordinary use.
 
-### item 8: Avoid finalizers and cleaners
+The objects that are referenced only by **weak references** are garbage collected eagerly; the GC won't wait until it needs memory in that case.
+
+## item 8: Avoid finalizers and cleaners
 Don't use cleaners and finalizers except as a safety net.
 
-### Item 9: Prefer try-with-resources to try-finally
+## Item 9: Prefer try-with-resources to try-finally
 ```java
 package effectivejava.chapter2.item9.trywithresources;
 
