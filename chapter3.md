@@ -1,4 +1,4 @@
-# Methods common to all objects
+# Chapter 3: Methods common to all objects
 
 ## Item 10: Obey the general contract when overriding equals
 
