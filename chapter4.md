@@ -508,3 +508,60 @@ public class MySet<E> extends AbstractSet<E> {
 A common use of private static member classes is to represent components of the object represented by their enclosing class. For example, consider a Map instanfce, which associates keys with values. Many Map implementations have an internal Entry object for each key-value pair in the map. While each entry is associated with a map, the methods on an entry (getKey, getVlue and setValue) do not need access to the map. Therefore, a private static member class is best.
 
 If a nested class needs to be visible outside of a single method or is too long to fit comfortably inside a method, use a member class. If each instance of a member class needs a reference to its enclosing instance, make it nonstatic; otherwise, make it static. Assuming the class belongs inside a method, if you need to create instance from only one location and there is a preexisting type that characterizes the class, make it an anonymous class; otherwise, make it a local class.
+
+## Item 25: Limit source files to a single top-level class
+```java
+// Utensil.java
+package effectivejava.chapter4.item25;
+
+// Two classes defined in one file. Don't ever do this!  (Page 115)
+class Utensil {
+    static final String NAME = "pan";
+}
+
+class Dessert {
+    static final String NAME = "cake";
+}
+```
+```java
+// Dessert.java
+package effectivejava.chapter4.item25;
+
+// Two classes defined in one file. Don't ever do this!  (Page 115)
+class Utensil {
+    static final String NAME = "pan";
+}
+
+class Dessert {
+    static final String NAME = "cake";
+}
+```
+```java
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(Utensil.NAME + Dessert.NAME);
+    }
+}
+```
+The compilation may fail, or print pancake, or print potpie.
+
+If you're tempted to put multiple top-level classes into a single source file, consider using static member class as an alternative to splitting the classes into separate source files.
+
+```java
+package effectivejava.chapter4.item25;
+
+// Static member classes instead of multiple top-level classes (Page 116)
+public class Test {
+    public static void main(String[] args) {
+        System.out.println(Utensil.NAME + Dessert.NAME);
+    }
+
+    private static class Utensil {
+        static final String NAME = "pan";
+    }
+
+    private static class Dessert {
+        static final String NAME = "cake";
+    }
+}
+```
