@@ -127,7 +127,7 @@ Now that Java has lambdas, best practices for writing APIs have changed consid- 
 
 The basic interfaces operate on object reference types. The Operator interfaces represent functions whose result and argument types are the same. The Predicate interface represents a function that takes an argument and returns a boolean. The Function interface represents a function whose argument and return types differ. The Supplier interface represents a function that takes no arguments and returns (or “supplies”) a value. Finally, Consumer represents a function that takes an argument and returns nothing, essentially consuming its argument. The six basic functional interfaces are summarized below:
 
-![Functional Interfaces](images/functional_interfaces.png)
+![Functional Interfaces](images/functional_interface.png)
 
 
 
